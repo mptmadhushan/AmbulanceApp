@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: 'white',
-    padding: 10,
+    padding: 11,
   },
 });
 
