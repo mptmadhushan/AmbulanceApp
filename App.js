@@ -14,6 +14,7 @@ import CallAmbulance from './screens/CallAmbulance';
 import AmbulanceMap from './screens/AmbulanceMap';
 import AccidentPrediction from './screens/AccidentPrediction';
 import PreAccident from './screens/PreAccident';
+import DriverScreen from './screens/DriverScreen';
 const App = () => {
   return (
     <NavigationContainer>
@@ -28,6 +29,7 @@ const App = () => {
         <Stack.Screen name="CallAmbulance" component={CallAmbulance} />
         <Stack.Screen name="AmbulanceMap" component={AmbulanceMap} />
         <Stack.Screen name="PreAccident" component={PreAccident} />
+        <Stack.Screen name="DriverScreen" component={DriverScreen} />
         <Stack.Screen
           name="AccidentPrediction"
           component={AccidentPrediction}

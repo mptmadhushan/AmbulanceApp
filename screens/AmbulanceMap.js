@@ -34,8 +34,6 @@ const OrderDelivery = ({route, navigation}) => {
   };
 
   React.useEffect(() => {
-    // let {restaurant, currentLocation} = route.params;
-
     let fromLoc = initialCurrentLocation.gps;
     let toLoc = initialAmbulanceLocation.location;
     let street = initialCurrentLocation.streetName;

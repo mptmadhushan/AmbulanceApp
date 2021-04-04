@@ -57,7 +57,7 @@ function CallAmbulance({navigation}) {
         onPress={() => {
           // createUser();
 
-          navigation.navigate('OnBoard2');
+          navigation.navigate('DriverScreen');
 
           // navigation.navigate('Home');
         }}
