@@ -14,6 +14,8 @@ import {RNCamera} from 'react-native-camera';
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 
 const PreAccident = ({navigation}) => {
+  const [safe, setSafe] = React.useState(false);
+
   function renderHeader() {
     return (
       <SafeAreaView style={styles.container}>
@@ -22,8 +24,8 @@ const PreAccident = ({navigation}) => {
           source={require('../assets/images/wave-haikei.png')}>
           <View style={styles.container}>
             <View style={styles.contentCenter}>
-              <Text style={styles.title}> AMBULANCE{'\n'}Prediction</Text>
-              <Text style={styles.title2}> Hi User</Text>
+              <Text style={styles.title}>AMBULANCE{'\n'}Prediction</Text>
+              <Text style={styles.title2}>Hello Buford!</Text>
             </View>
             <View>{/* <Text style={styles.title2}> Hi User</Text> */}</View>
             <View
@@ -107,21 +109,52 @@ const PreAccident = ({navigation}) => {
               </View>
             </View>
           </View>
+
           <View
             style={{
               flexDirection: 'row',
-              marginTop: 10,
               justifyContent: 'space-around',
             }}>
-            <Image
-              source={images.risk}
+            <View style={{width: SIZES.width / 4}}>
+              {safe === true ? (
+                <Image
+                  source={require('../assets/images/face.png')}
+                  style={{
+                    width: 90,
+                    height: 90,
+                  }}
+                />
+              ) : (
+                <Image
+                  source={require('../assets/images/clipart258856.png')}
+                  style={{
+                    width: 100,
+                    height: 100,
+                    padding: 5,
+                  }}
+                />
+              )}
+            </View>
+            <View
               style={{
-                width: 70,
-                height: 70,
-              }}
-            />
-            <Text style={{...FONTS.h4, color: COLORS.white}}>Time</Text>
+                width: SIZES.width / 4,
+                backgroundColor: COLORS.black,
+                borderColor: COLORS.primary,
+                borderWidth: 2,
+                borderRadius: 30,
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}>
+              {safe === true ? (
+                <Text style={{...FONTS.h3, color: COLORS.white}}>
+                  Safe Driving
+                </Text>
+              ) : (
+                <Text style={{...FONTS.h3, color: COLORS.white}}>Sleepy</Text>
+              )}
+            </View>
           </View>
+
           <View
             style={{
               flexDirection: 'row',
@@ -131,14 +164,15 @@ const PreAccident = ({navigation}) => {
               onPress={() => {
                 // createUser();
 
-                navigation.navigate('Login');
+                navigation.navigate('Home');
 
                 // navigation.navigate('Home');
               }}
               style={{
                 borderRadius: 30,
-                paddingVertical: 15,
-                paddingHorizontal: 25,
+                paddingVertical: 10,
+                paddingHorizontal: 20,
+                marginTop: 40,
                 marginBottom: 20,
                 justifyContent: 'center',
                 backgroundColor: COLORS.primary,
@@ -194,7 +228,7 @@ const styles = StyleSheet.create({
 
   title: {
     marginTop: SIZES.height * 0.02,
-    fontSize: 55,
+    fontSize: 45,
     padding: 15,
     color: 'white',
     fontWeight: 'bold',
