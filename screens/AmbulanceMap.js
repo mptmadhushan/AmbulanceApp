@@ -1,6 +1,6 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View, Text, Image, TouchableOpacity} from 'react-native';
+import {View, Text, Image, TouchableOpacity, Linking} from 'react-native';
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
@@ -265,7 +265,7 @@ const OrderDelivery = ({route, navigation}) => {
                 justifyContent: 'center',
                 borderRadius: 10,
               }}
-              onPress={() => navigation.navigate('Home')}>
+              onPress={() => navigation.navigate('AccidentPrediction')}>
               <Text style={{...FONTS.h4, color: COLORS.white}}>
                 Accident Prediction
               </Text>
@@ -280,7 +280,7 @@ const OrderDelivery = ({route, navigation}) => {
                 justifyContent: 'center',
                 borderRadius: 10,
               }}
-              onPress={() => navigation.navigate('Home')}>
+              onPress={() => navigation.navigate('AccidentPrediction')}>
               <Text style={{...FONTS.h4, color: COLORS.white}}>
                 Accident Prediction
               </Text>
@@ -294,7 +294,7 @@ const OrderDelivery = ({route, navigation}) => {
                 justifyContent: 'center',
                 borderRadius: 10,
               }}
-              onPress={() => navigation.goBack()}>
+              onPress={() => navigation.navigate('AccidentPrediction')}>
               <Text style={{...FONTS.h4, color: COLORS.white}}>
                 Accident Prediction
               </Text>
@@ -316,7 +316,9 @@ const OrderDelivery = ({route, navigation}) => {
                 justifyContent: 'center',
                 borderRadius: 10,
               }}
-              onPress={() => navigation.navigate('AccidentPrediction')}>
+              onPress={() => {
+                Linking.openURL('tel:119');
+              }}>
               <Text style={{...FONTS.h4, color: COLORS.white}}>Call</Text>
             </TouchableOpacity>
 

@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -11,10 +11,106 @@ import {
   ImageBackground,
 } from 'react-native';
 import {RNCamera} from 'react-native-camera';
+import GetLocation from 'react-native-get-location';
+import axios from 'axios';
+// import {useCamera} from 'react-native-camera-hooks';
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 
 const PreAccident = ({navigation}) => {
+  var today = new Date();
+  const time = today.getHours() + ':' + today.getMinutes();
+  const [dt, setDt] = useState(time);
+
+  React.useEffect(() => {
+    let secTimer = setInterval(() => {
+      var today = new Date();
+      const time = today.getHours() + ':' + today.getMinutes();
+      setDt(time);
+    }, 60000);
+
+    setInterval(() => {
+      takePicture();
+    }, 3000);
+
+    // return () => clearInterval(secTimer);
+  });
+  React.useEffect(() => {
+    console.log('effect');
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+      .then(location => {
+        console.log('location 👨‍✈️');
+        console.log(location);
+        getLocations(location);
+      })
+      .catch(error => {
+        console.log('location error 🌸');
+        console.log(error);
+        const {code, message} = error;
+        console.warn(code, message);
+      });
+  }, []);
+
   const [safe, setSafe] = React.useState(false);
+  const [location, setLocation] = React.useState('');
+  function getLocations(loca) {
+    const lat = loca.latitude;
+    const lng = loca.longitude;
+    console.log('lat, latlng');
+    console.log(lat, lng);
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAjO92NdWvu0qpgVhOXZdj89OUGxS94F-U`,
+      )
+      .then(function (response) {
+        // console.log('lca', response.data.results[0].formatted_address);
+        const locationName = response.data.results[0].formatted_address;
+        var myArray = locationName.split(',');
+        console.log('myArray[0] 🚂🚂');
+        console.log(myArray[0]);
+        setLocation(myArray[0]);
+      })
+      .catch(function (error) {
+        console.log('cla', error);
+      });
+  }
+  let camera;
+  async function takePicture() {
+    if (camera) {
+      const options = {
+        quality: 0.5,
+        base64: true,
+        orientation: 'landscapeLeft',
+        forceUpOrientation: true,
+        fixOrientation: true,
+      };
+      const data = await camera.takePictureAsync(options);
+      console.log('🧕🧕🧕🧕🧕');
+      console.log('🧕🧕🧕🧕🧕');
+      const baseImage = data.base64;
+      axios
+        .post('http://sahan1314.pythonanywhere.com/driver_activity', {
+          base_string: baseImage,
+        })
+        .then(function (response) {
+          // console.log(response.data);
+          let resData = response.data;
+          let isSleep = resData.Sleep;
+          if (isSleep === 'Not Sleeping') {
+            console.log('not sleeping 💃💃💃');
+            setSafe(true);
+          } else {
+            console.log('Seeping 😪😪😪');
+            setSafe(false);
+          }
+        })
+        .catch(function (errnor) {
+          console.log(error);
+        });
+    }
+  }
 
   function renderHeader() {
     return (
@@ -22,100 +118,94 @@ const PreAccident = ({navigation}) => {
         <ImageBackground
           style={{flex: 1}}
           source={require('../assets/images/wave-haikei.png')}>
-          <View style={styles.container}>
+          <View style={styles.containerNew}>
             <View style={styles.contentCenter}>
-              <Text style={styles.title}>AMBULANCE{'\n'}Prediction</Text>
+              <Text style={styles.title}>Pre-Accident {'\n'}Detection</Text>
               <Text style={styles.title2}>Hello Buford!</Text>
-            </View>
-            <View>{/* <Text style={styles.title2}> Hi User</Text> */}</View>
-            <View
-              style={{
-                flexDirection: 'row',
-                marginTop: SIZES.padding * 10,
-                justifyContent: 'space-around',
-              }}>
-              <View style={styles.container2}>
-                <RNCamera
-                  ref={ref => {
-                    // this.camera = ref;
-                  }}
-                  style={styles.preview}
-                  type={RNCamera.Constants.Type.front}
-                  flashMode={RNCamera.Constants.FlashMode.on}
-                  androidCameraPermissionOptions={{
-                    title: 'Permission to use camera',
-                    message: 'We need your permission to use your camera',
-                    buttonPositive: 'Ok',
-                    buttonNegative: 'Cancel',
-                  }}
-                  androidRecordAudioPermissionOptions={{
-                    title: 'Permission to use audio recording',
-                    message: 'We need your permission to use your audio',
-                    buttonPositive: 'Ok',
-                    buttonNegative: 'Cancel',
-                  }}
-                  onGoogleVisionBarcodesDetected={({barcodes}) => {
-                    console.log(barcodes);
-                  }}
-                />
-              </View>
-              <View
-                style={{
-                  flexDirection: 'column',
-                  marginTop: SIZES.padding * 2,
-                }}>
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    height: 30,
-                    width: 120,
-                    backgroundColor: COLORS.primary,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 10,
-                  }}>
-                  <Text style={{...FONTS.h4, color: COLORS.white}}>
-                    Location
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    height: 30,
-                    marginTop: SIZES.padding * 2,
-                    width: 120,
-                    backgroundColor: COLORS.primary,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 10,
-                  }}>
-                  <Text style={{...FONTS.h4, color: COLORS.white}}>
-                    Raining
-                  </Text>
-                </TouchableOpacity>
-                <TouchableOpacity
-                  style={{
-                    flex: 1,
-                    marginTop: SIZES.padding * 2,
-                    height: 30,
-                    width: 120,
-                    backgroundColor: COLORS.primary,
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    borderRadius: 10,
-                  }}>
-                  <Text style={{...FONTS.h4, color: COLORS.white}}>Time</Text>
-                </TouchableOpacity>
-              </View>
             </View>
           </View>
 
           <View
             style={{
-              flexDirection: 'row',
-              justifyContent: 'space-around',
+              padding: 24,
             }}>
-            <View style={{width: SIZES.width / 4}}>
+            <View style={styles.container2}>
+              <RNCamera
+                ref={ref => (camera = ref)}
+                style={{flex: 1}}
+                type={RNCamera.Constants.Type.front}
+                flashMode={RNCamera.Constants.FlashMode.on}
+                androidCameraPermissionOptions={{
+                  title: 'Permission to use camera',
+                  message: 'We need your permission to use your camera',
+                  buttonPositive: 'Ok',
+                  buttonNegative: 'Cancel',
+                }}
+                androidRecordAudioPermissionOptions={{
+                  title: 'Permission to use audio recording',
+                  message: 'We need your permission to use your audio',
+                  buttonPositive: 'Ok',
+                  buttonNegative: 'Cancel',
+                }}
+              />
+            </View>
+          </View>
+          <View
+            style={{
+              marginTop: -120,
+              flex: 1,
+              alignItems: 'flex-end',
+              justifyContent: 'space-between',
+              flexDirection: 'column',
+              // marginTop: SIZES.padding * 2,
+            }}>
+            <TouchableOpacity
+              onPress={takePicture}
+              style={{
+                flex: 1,
+                height: 30,
+                width: 120,
+                backgroundColor: COLORS.primary,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 10,
+              }}>
+              <Text style={{...FONTS.h4, color: COLORS.white}}>{location}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                height: 30,
+                marginTop: SIZES.padding * 2,
+                width: 120,
+                backgroundColor: COLORS.primary,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 10,
+              }}>
+              <Text style={{...FONTS.h4, color: COLORS.white}}>Raining</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              style={{
+                flex: 1,
+                marginTop: SIZES.padding * 2,
+                height: 30,
+                width: 120,
+                backgroundColor: COLORS.primary,
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderRadius: 10,
+              }}>
+              <Text style={{...FONTS.h4, color: COLORS.white}}>{dt}</Text>
+            </TouchableOpacity>
+          </View>
+          <View
+            style={{
+              flexDirection: 'row',
+              justifyContent: 'space-between',
+              padding: 24,
+            }}>
+            <View style={{width: SIZES.width / 5}}>
               {safe === true ? (
                 <Image
                   source={require('../assets/images/face.png')}
@@ -130,13 +220,31 @@ const PreAccident = ({navigation}) => {
                   style={{
                     width: 100,
                     height: 100,
-                    padding: 5,
+                    paddingTop: 15,
                   }}
                 />
               )}
             </View>
+            <View>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate('Home');
+                }}
+                style={{
+                  borderRadius: 30,
+                  paddingVertical: 10,
+                  paddingHorizontal: 20,
+                  marginTop: 40,
+                  marginBottom: 20,
+                  justifyContent: 'center',
+                  backgroundColor: COLORS.primary,
+                }}>
+                <Text style={{...FONTS.h3, color: COLORS.white}}>Home</Text>
+              </TouchableOpacity>
+            </View>
             <View
               style={{
+                marginTop: 20,
                 width: SIZES.width / 4,
                 backgroundColor: COLORS.black,
                 borderColor: COLORS.primary,
@@ -154,32 +262,6 @@ const PreAccident = ({navigation}) => {
               )}
             </View>
           </View>
-
-          <View
-            style={{
-              flexDirection: 'row',
-              justifyContent: 'center',
-            }}>
-            <TouchableOpacity
-              onPress={() => {
-                // createUser();
-
-                navigation.navigate('Home');
-
-                // navigation.navigate('Home');
-              }}
-              style={{
-                borderRadius: 30,
-                paddingVertical: 10,
-                paddingHorizontal: 20,
-                marginTop: 40,
-                marginBottom: 20,
-                justifyContent: 'center',
-                backgroundColor: COLORS.primary,
-              }}>
-              <Text style={{...FONTS.h3, color: COLORS.white}}>Home</Text>
-            </TouchableOpacity>
-          </View>
         </ImageBackground>
       </SafeAreaView>
     );
@@ -194,24 +276,13 @@ const styles = StyleSheet.create({
   //   backgroundColor: COLORS.lightGray4,
   // },
   container2: {
+    transform: [{rotate: '-90deg'}],
     height: SIZES.height / 4,
-    width: SIZES.width / 2,
+    width: SIZES.width,
+
     backgroundColor: 'black',
   },
-  preview: {
-    flex: 1,
-    justifyContent: 'flex-end',
-    alignItems: 'center',
-  },
-  capture: {
-    flex: 0,
-    backgroundColor: '#fff',
-    borderRadius: 5,
-    padding: 15,
-    paddingHorizontal: 20,
-    alignSelf: 'center',
-    margin: 20,
-  },
+
   shadow: {
     shadowColor: '#000',
     shadowOffset: {
@@ -225,10 +296,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  containerNew: {
+    flex: 1,
+  },
 
   title: {
-    marginTop: SIZES.height * 0.02,
-    fontSize: 45,
+    fontSize: 35,
     padding: 15,
     color: 'white',
     fontWeight: 'bold',
@@ -236,7 +309,7 @@ const styles = StyleSheet.create({
   },
   title2: {
     marginTop: SIZES.height * 0.02,
-    fontSize: 25,
+    fontSize: 15,
     padding: 5,
     color: 'white',
     textAlign: 'left',

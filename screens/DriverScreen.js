@@ -13,6 +13,8 @@ import {
 import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 import {Avatar} from 'react-native-elements';
+import APIKit, {setClientToken} from '../constants/apiKitPython';
+np
 function DriverScreen({navigation}) {
   const [fire, setFire] = React.useState(true);
   const [drowned, setDrowned] = React.useState(false);
@@ -34,7 +36,21 @@ function DriverScreen({navigation}) {
     },
   ];
 
-  React.useEffect(() => {}, []);
+  React.useEffect(() => {
+    getData();
+  }, []);
+  const getData = () => {
+    console.log('hey');
+    const onSuccess = ({data}) => {
+      console.log('data', data);
+    };
+    const onFailure = error => {
+      console.log('error', error);
+    };
+
+    // Show spinner when call is made
+    APIKit.get('').then(onSuccess).catch(onFailure);
+  };
   return (
     <View style={styles.container}>
       <ImageBackground
@@ -54,7 +70,7 @@ function DriverScreen({navigation}) {
             onPress={() => console.log('Works!')}
           />
         </View>
-        <View style={{height: 330, padding: 10}}>
+        <View style={{height: 200, padding: 10}}>
           <SwiperFlatList
             autoplay
             autoplayDelay={2}
@@ -76,7 +92,7 @@ function DriverScreen({navigation}) {
           style={{
             flexDirection: 'row',
             marginTop: SIZES.padding * 3,
-            marginLeft: SIZES.padding * 5,
+            marginLeft: SIZES.padding * 2,
             justifyContent: 'flex-start',
           }}>
           <View style={styles.listBackground}>
@@ -194,7 +210,11 @@ function DriverScreen({navigation}) {
             justifyContent: 'space-around',
           }}>
           <TouchableOpacity style={styles.btnDriver2}>
-            <Text style={{...FONTS.h3, color: COLORS.white}}>Accept</Text>
+            <Text
+              style={{...FONTS.h3, color: COLORS.white}}
+              onPress={() => navigation.navigate('AmbulanceMap')}>
+              Accept
+            </Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.btnDriver2}>
             <Text style={{...FONTS.h3, color: COLORS.white}}>Declined</Text>
@@ -204,6 +224,7 @@ function DriverScreen({navigation}) {
     </View>
   );
 }
+
 const {width} = Dimensions.get('window');
 const styles = StyleSheet.create({
   container: {flex: 1, backgroundColor: 'white'},
@@ -216,7 +237,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   listTitle: {
-    fontSize: 20,
+    fontSize: 15,
     color: COLORS.black,
     fontWeight: 'bold',
     textAlign: 'left',
@@ -239,7 +260,7 @@ const styles = StyleSheet.create({
   list: {
     flexDirection: 'row',
     marginTop: SIZES.padding * 1,
-    marginLeft: SIZES.padding * 5,
+    marginLeft: SIZES.padding * 2,
     justifyContent: 'flex-start',
   },
   btnDriver: {

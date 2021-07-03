@@ -65,7 +65,7 @@ const OnBoard = ({navigation}) => {
               onPress={() => {
                 // createUser();
 
-                navigation.navigate('Login');
+                navigation.navigate('RegisterScreen');
 
                 // navigation.navigate('Home');
               }}

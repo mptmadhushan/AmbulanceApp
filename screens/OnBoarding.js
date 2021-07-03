@@ -1,5 +1,6 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 
 import {
   View,
@@ -11,8 +12,38 @@ import {
   ImageBackground,
 } from 'react-native';
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
+import AsyncStorage from '@react-native-community/async-storage';
 
 const OnBoard = ({navigation}) => {
+  useEffect(() => {
+    // getData();
+    // Update the document title using the browser API
+  }, []);
+  const getData = async () => {
+    console.log('cis');
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Key');
+      // return jsonValue != null ? JSON.parse(jsonValue) : null;
+      const userData = JSON.parse(jsonValue);
+      // console.log('userdata 😷', userData.user._id);
+      if (userData.user._id) {
+        console.log('loged');
+        if (userData.user.is_driver === true) {
+          navigation.navigate('DriverScreen');
+        } else {
+          navigation.navigate('Home');
+        }
+      } else {
+        console.log('not');
+        navigation.navigate('OnBoard2');
+      }
+    } catch (e) {
+      console.log('ee');
+      navigation.navigate('OnBoard2');
+
+      // error reading value
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <ImageBackground
@@ -33,14 +64,13 @@ const OnBoard = ({navigation}) => {
             />
             <TouchableOpacity
               onPress={() => {
+                getData();
                 // createUser();
-
-                navigation.navigate('OnBoard2');
-
+                // navigation.navigate('OnBoard2');
                 // navigation.navigate('Home');
               }}
               style={{
-                marginTop: 40,
+                marginTop: 20,
                 elevation: 8,
                 borderRadius: 30,
                 paddingVertical: 15,
@@ -63,7 +93,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   title: {
-    fontSize: 55,
+    fontSize: 45,
     padding: 15,
     color: 'white',
     fontWeight: 'bold',

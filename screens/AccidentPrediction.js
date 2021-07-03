@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -10,10 +10,27 @@ import {
   FlatList,
   ImageBackground,
 } from 'react-native';
+import APIKit, {setClientToken} from '../constants/apiKitPython';
 
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 
 const AccidentPrediction = ({navigation}) => {
+  useEffect(() => {
+    getData();
+    // Update the document title using the browser API
+  }, []);
+  const getData = () => {
+    console.log('hey');
+    const onSuccess = ({data}) => {
+      console.log('data', data);
+    };
+    const onFailure = error => {
+      console.log('error', error);
+    };
+
+    // Show spinner when call is made
+    APIKit.get('/risk_predict').then(onSuccess).catch(onFailure);
+  };
   function renderHeader() {
     return (
       <SafeAreaView style={styles.container}>
@@ -22,7 +39,7 @@ const AccidentPrediction = ({navigation}) => {
           source={require('../assets/images/wave-haikei.png')}>
           <View style={styles.container}>
             <View style={styles.contentCenter}>
-              <Text style={styles.title}> AMBULANCE{'\n'}Prediction</Text>
+              <Text style={styles.title}> Accident{'\n'}Prediction</Text>
               <View
                 style={{
                   marginTop: SIZES.height * 0.02,
@@ -248,7 +265,7 @@ const AccidentPrediction = ({navigation}) => {
                     color: COLORS.third,
                     textAlign: 'center',
                   }}>
-                  Risk of {'\n'}accident
+                  Risk of {'\n'}accident : 45.2
                 </Text>
               </TouchableOpacity>
             </View>
@@ -306,7 +323,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: SIZES.height * 0.02,
-    fontSize: 55,
+    fontSize: 45,
     padding: 15,
     color: 'white',
     fontWeight: 'bold',

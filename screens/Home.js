@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React from 'react';
+import React, {useEffect} from 'react';
 import {
   SafeAreaView,
   View,
@@ -10,10 +10,24 @@ import {
   FlatList,
   ImageBackground,
 } from 'react-native';
-
+import AsyncStorage from '@react-native-community/async-storage';
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 
 const Home = ({navigation}) => {
+  useEffect(() => {
+    getData();
+    // Update the document title using the browser API
+  }, []);
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem('@storage_Key');
+      // return jsonValue != null ? JSON.parse(jsonValue) : null;
+      console.log('userdata 😷', jsonValue);
+    } catch (e) {
+      // error reading value
+    }
+  };
   const initialCurrentLocation = {
     streetName: 'Nuwara Eliya',
     gps: {

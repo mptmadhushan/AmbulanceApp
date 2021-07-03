@@ -17,7 +17,8 @@ import {
 } from 'react-native';
 
 import Loader from '../components/Loader';
-
+import APIKit, {setClientToken} from '../constants/apiKit';
+import AsyncStorage from '@react-native-community/async-storage';
 const LoginScreen = ({navigation}) => {
   const STORAGE_KEY = '@save_age';
   const [userEmail, setUserEmail] = useState('');
@@ -26,7 +27,48 @@ const LoginScreen = ({navigation}) => {
   const [errortext, setErrortext] = useState('');
 
   const passwordInputRef = createRef();
+  const storeData = async value => {
+    try {
+      const jsonValue = JSON.stringify(value);
+      await AsyncStorage.setItem('@storage_Key', jsonValue);
+      console.log(value.user.is_driver);
+      if (value.user.is_driver === true) {
+        navigation.navigate('DriverScreen');
+        console.log('driver');
+      } else {
+        console.log('not-driver');
+        navigation.navigate('Home');
+      }
+    } catch (e) {
+      // saving error
+    }
+  };
+  const onPressLogin = () => {
+    const username = userEmail;
+    const password = userPassword;
+    const payload = {username, password};
+    console.log('send data', payload);
 
+    const onSuccess = ({data}) => {
+      // Set JSON Web Token on success
+      // setClientToken(data.token);
+      setLoading(false);
+      // console.log('data', data);
+      storeData(data);
+    };
+
+    const onFailure = error => {
+      console.log('error', error);
+      setLoading(false);
+
+      // this.setState({errors: error.response.data, isLoading: false});
+    };
+
+    // Show spinner when call is made
+    setLoading(true);
+
+    APIKit.post('/login', payload).then(onSuccess).catch(onFailure);
+  };
   return (
     <View style={styles.mainBody}>
       <Loader loading={loading} />
@@ -87,7 +129,7 @@ const LoginScreen = ({navigation}) => {
             <TouchableOpacity
               style={styles.buttonStyle}
               activeOpacity={0.5}
-              onPress={() => navigation.navigate('Home')}>
+              onPress={() => onPressLogin()}>
               <Text style={styles.buttonTextStyle}>LOGIN</Text>
             </TouchableOpacity>
             <Text
