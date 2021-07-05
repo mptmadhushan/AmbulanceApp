@@ -41,8 +41,8 @@ const PreAccident = ({navigation}) => {
       timeout: 15000,
     })
       .then(location => {
-        console.log('location 👨‍✈️');
-        console.log(location);
+        // console.log('location 👨‍✈️');
+        // console.log(location);
         getLocations(location);
       })
       .catch(error => {
@@ -95,7 +95,7 @@ const PreAccident = ({navigation}) => {
           base_string: baseImage,
         })
         .then(function (response) {
-          // console.log(response.data);
+          console.log(response.data.driver_activity);
           let resData = response.data;
           let isSleep = resData.Sleep;
           if (isSleep === 'Not Sleeping') {
@@ -106,7 +106,7 @@ const PreAccident = ({navigation}) => {
             setSafe(false);
           }
         })
-        .catch(function (errnor) {
+        .catch(function (error) {
           console.log(error);
         });
     }

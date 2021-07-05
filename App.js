@@ -15,6 +15,8 @@ import AmbulanceMap from './screens/AmbulanceMap';
 import AccidentPrediction from './screens/AccidentPrediction';
 import PreAccident from './screens/PreAccident';
 import DriverScreen from './screens/DriverScreen';
+import Profile from './screens/Profile';
+import DriverDashboard from './screens/DriverDashboard';
 const App = () => {
   return (
     <NavigationContainer>
@@ -25,11 +27,13 @@ const App = () => {
         <Stack.Screen name="OnBoard" component={OnBoard} />
         <Stack.Screen name="OnBoard2" component={OnBoard2} />
         <Stack.Screen name="Login" component={LogIn} />
+        <Stack.Screen name="DriverDashboard" component={DriverDashboard} />
         <Stack.Screen name="RegisterScreen" component={Register} />
         <Stack.Screen name="CallAmbulance" component={CallAmbulance} />
         <Stack.Screen name="AmbulanceMap" component={AmbulanceMap} />
         <Stack.Screen name="PreAccident" component={PreAccident} />
         <Stack.Screen name="DriverScreen" component={DriverScreen} />
+        <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen
           name="AccidentPrediction"
           component={AccidentPrediction}

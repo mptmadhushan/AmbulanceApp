@@ -1,5 +1,5 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   SafeAreaView,
   View,
@@ -11,7 +11,7 @@ import {
   ImageBackground,
 } from 'react-native';
 import APIKit, {setClientToken} from '../constants/apiKitPython';
-
+import Loader from '../components/Loader';
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 
 const AccidentPrediction = ({navigation}) => {
@@ -20,17 +20,33 @@ const AccidentPrediction = ({navigation}) => {
     // Update the document title using the browser API
   }, []);
   const getData = () => {
+    const payload = {
+      temp: 32,
+      hum: 80,
+      traffic_cond: 50,
+      acc_time: 1,
+      road_type: 1,
+      no_lanes: 2,
+      bus_route: 0,
+      train_crossing: 1,
+      junction_type: 1,
+    };
     console.log('hey');
     const onSuccess = ({data}) => {
-      console.log('data', data);
+      console.log('data', data.results[0].risk_level);
+      setLoading(false);
+      setRisk(data.results[0].risk_level);
     };
     const onFailure = error => {
       console.log('error', error);
     };
 
     // Show spinner when call is made
-    APIKit.get('/risk_predict').then(onSuccess).catch(onFailure);
+    APIKit.post('/risk_predict', payload).then(onSuccess).catch(onFailure);
   };
+  const [loading, setLoading] = useState(true);
+  const [risk, setRisk] = useState('');
+
   function renderHeader() {
     return (
       <SafeAreaView style={styles.container}>
@@ -38,6 +54,7 @@ const AccidentPrediction = ({navigation}) => {
           style={{flex: 1}}
           source={require('../assets/images/wave-haikei.png')}>
           <View style={styles.container}>
+            <Loader loading={loading} />
             <View style={styles.contentCenter}>
               <Text style={styles.title}> Accident{'\n'}Prediction</Text>
               <View
@@ -261,11 +278,11 @@ const AccidentPrediction = ({navigation}) => {
                 onPress={() => navigation.goBack()}>
                 <Text
                   style={{
-                    ...FONTS.h4,
+                    ...FONTS.h1,
                     color: COLORS.third,
                     textAlign: 'center',
                   }}>
-                  Risk of {'\n'}accident : 45.2
+                  Risk of {'\n'}accident :{risk}
                 </Text>
               </TouchableOpacity>
             </View>

@@ -11,6 +11,7 @@ export const user = require('../assets/icons/user.png');
 export const ambulance = require('../assets/icons/20532427.png');
 export const pin = require('../assets/icons/first.png');
 export const done = require('../assets/icons/Hand-drawn-correct-icon-on-transparent-background-PNG.png');
+// export const user = require('../assets/icons/user.png');
 
 export default {
   back,

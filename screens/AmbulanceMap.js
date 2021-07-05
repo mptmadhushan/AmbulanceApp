@@ -5,6 +5,7 @@ import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 import MapViewDirections from 'react-native-maps-directions';
 
 import {COLORS, FONTS, icons, SIZES, GOOGLE_API_KEY} from '../constants';
+import APIKit, {setClientToken} from '../constants/apiKit';
 
 const OrderDelivery = ({route, navigation}) => {
   const mapView = React.useRef();
@@ -18,6 +19,7 @@ const OrderDelivery = ({route, navigation}) => {
   const [duration, setDuration] = React.useState(0);
   const [isReady, setIsReady] = React.useState(false);
   const [angle, setAngle] = React.useState(0);
+  const [accInfo, setAccInfro] = React.useState('');
 
   const initialCurrentLocation = {
     streetName: 'Nuwara Eliya',
@@ -34,6 +36,7 @@ const OrderDelivery = ({route, navigation}) => {
   };
 
   React.useEffect(() => {
+    getData();
     let fromLoc = initialCurrentLocation.gps;
     let toLoc = initialAmbulanceLocation.location;
     let street = initialCurrentLocation.streetName;
@@ -51,6 +54,19 @@ const OrderDelivery = ({route, navigation}) => {
     setToLocation(toLoc);
     setRegion(mapRegion);
   }, []);
+
+  const getData = () => {
+    console.log('hey');
+    const onSuccess = ({data}) => {
+      console.log('data', data);
+      setAccInfro(data);
+    };
+    const onFailure = error => {
+      console.log('error', error);
+    };
+
+    APIKit.get('/get_one').then(onSuccess).catch(onFailure);
+  };
 
   function calculateAngle(coordinates) {
     let startLat = coordinates[0]['latitude'];
@@ -264,25 +280,14 @@ const OrderDelivery = ({route, navigation}) => {
                 alignItems: 'center',
                 justifyContent: 'center',
                 borderRadius: 10,
+                width: '80%',
               }}
               onPress={() => navigation.navigate('AccidentPrediction')}>
               <Text style={{...FONTS.h4, color: COLORS.white}}>
-                Accident Prediction
+                Name :{accInfo.username}
               </Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={{
-                flex: 1,
-                height: 80,
-                marginRight: 10,
-                backgroundColor: COLORS.secondary,
-                alignItems: 'center',
-                justifyContent: 'center',
-                borderRadius: 10,
-              }}
-              onPress={() => navigation.navigate('AccidentPrediction')}>
               <Text style={{...FONTS.h4, color: COLORS.white}}>
-                Accident Prediction
+                Acc type :{accInfo.accident_type}
               </Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -297,7 +302,7 @@ const OrderDelivery = ({route, navigation}) => {
               onPress={() => navigation.navigate('AccidentPrediction')}>
               <Text style={{...FONTS.h4, color: COLORS.white}}>
                 Accident Prediction
-              </Text>
+              </Text> 
             </TouchableOpacity>
           </View>
           <View

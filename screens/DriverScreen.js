@@ -14,7 +14,7 @@ import {SwiperFlatList} from 'react-native-swiper-flatlist';
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 import {Avatar} from 'react-native-elements';
 import APIKit, {setClientToken} from '../constants/apiKitPython';
-np
+
 function DriverScreen({navigation}) {
   const [fire, setFire] = React.useState(true);
   const [drowned, setDrowned] = React.useState(false);
@@ -65,9 +65,9 @@ function DriverScreen({navigation}) {
           <Text style={styles.title}>AMBULANCE Driver App</Text>
           <Avatar
             rounded
+            onPress={() => navigation.navigate('Profile')}
             size="medium"
             source={images.user}
-            onPress={() => console.log('Works!')}
           />
         </View>
         <View style={{height: 200, padding: 10}}>

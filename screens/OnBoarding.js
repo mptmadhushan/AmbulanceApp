@@ -29,7 +29,7 @@ const OnBoard = ({navigation}) => {
       if (userData.user._id) {
         console.log('loged');
         if (userData.user.is_driver === true) {
-          navigation.navigate('DriverScreen');
+          navigation.navigate('DriverDashboard');
         } else {
           navigation.navigate('Home');
         }

@@ -53,12 +53,34 @@ const Home = ({navigation}) => {
                 onPress={() => {
                   // createUser();
 
-                  navigation.navigate('PreAccident');
+                  navigation.navigate('AccidentPrediction');
 
                   // navigation.navigate('Home');
                 }}
                 style={{
                   marginTop: SIZES.height * 0.1,
+                  marginLeft: 100,
+                  borderRadius: 30,
+                  paddingVertical: 15,
+                  paddingHorizontal: 25,
+                  marginBottom: 20,
+                  justifyContent: 'center',
+                  backgroundColor: COLORS.primary,
+                }}>
+                <Text style={{...FONTS.h3, color: COLORS.white}}>
+                  Accident Prediction
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  // createUser();
+
+                  navigation.navigate('PreAccident');
+
+                  // navigation.navigate('Home');
+                }}
+                style={{
+                  // marginTop: SIZES.height * 0.1,
                   marginLeft: 100,
                   borderRadius: 30,
                   paddingVertical: 15,
@@ -80,7 +102,7 @@ const Home = ({navigation}) => {
                   // navigation.navigate('Home');
                 }}
                 style={{
-                  marginLeft: -20,
+                  marginLeft: 0,
                   elevation: 8,
                   borderRadius: 30,
                   paddingVertical: 15,

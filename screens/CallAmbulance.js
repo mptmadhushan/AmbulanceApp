@@ -1,6 +1,13 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {StyleSheet, Text, View, Platform, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  Alert,
+  Text,
+  View,
+  Platform,
+  TouchableOpacity,
+} from 'react-native';
 import {Card, SimpleCard} from '@paraboly/react-native-card';
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -13,6 +20,10 @@ function CallAmbulance({navigation}) {
   const [result, setResult] = React.useState('');
   const [spinner, setSpinner] = React.useState(false);
 
+  const createTwoButtonAlert = () =>
+    Alert.alert('Success.!', 'Video has been successfully submitted..', [
+      {text: 'OK', onPress: () => navigation.navigate('Home')},
+    ]);
   const uploadVideo = async fileUrl => {
     console.log('upload');
     console.log('🧑‍🚀🧑‍🚀', fileUrl);
@@ -43,6 +54,7 @@ function CallAmbulance({navigation}) {
         console.log(data);
         setResult(data);
         setSpinner(false);
+        createTwoButtonAlert();
         sendData(data);
       })
       .catch(err => console.error(err));
@@ -65,12 +77,12 @@ function CallAmbulance({navigation}) {
     <View style={styles.container}>
       <Spinner
         visible={spinner}
-        textContent={'Loading...'}
+        textContent={'Sending...'}
         textStyle={styles.spinnerTextStyle}
       />
       <Text style={styles.title}> AMBULANCE EMS</Text>
       <MImagePicker
-        header={{nextTitle: 'Next', cancelTitle: 'Cancel'}}
+        header={{nextTitle: 'Send', cancelTitle: 'Cancel'}}
         onCancel={() => {}}
         onNext={async param => {
           console.log('param🪂');
@@ -169,7 +181,7 @@ export default CallAmbulance;
 
 const styles = StyleSheet.create({
   spinnerTextStyle: {
-    color: COLORS.primary,
+    color: COLORS.white,
   },
   welcome: {
     fontSize: 20,
