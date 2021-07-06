@@ -302,7 +302,7 @@ const OrderDelivery = ({route, navigation}) => {
               onPress={() => navigation.navigate('AccidentPrediction')}>
               <Text style={{...FONTS.h4, color: COLORS.white}}>
                 Accident Prediction
-              </Text> 
+              </Text>
             </TouchableOpacity>
           </View>
           <View

@@ -26,6 +26,7 @@
     "react-native-axios": "^0.17.1",
     "react-native-camera": "^3.44.1",
     "react-native-camera-hooks": "^0.5.1",
+    "react-native-dropdown-picker": "^5.1.21",
     "react-native-dynamic-vector-icons": "^1.1.4",
     "react-native-easy-view-transformer": "^1.2.0",
     "react-native-elements": "^3.3.2",

@@ -7,6 +7,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Image,
+  Modal,
   FlatList,
   ImageBackground,
 } from 'react-native';
@@ -19,6 +20,8 @@ const AccidentPrediction = ({navigation}) => {
     getData();
     // Update the document title using the browser API
   }, []);
+  const [modalVisible, setModalVisible] = useState(false);
+
   const getData = () => {
     const payload = {
       temp: 32,
@@ -35,6 +38,7 @@ const AccidentPrediction = ({navigation}) => {
     const onSuccess = ({data}) => {
       console.log('data', data.results[0].risk_level);
       setLoading(false);
+      setModalVisible(!modalVisible);
       setRisk(data.results[0].risk_level);
     };
     const onFailure = error => {
@@ -54,6 +58,32 @@ const AccidentPrediction = ({navigation}) => {
           style={{flex: 1}}
           source={require('../assets/images/wave-haikei.png')}>
           <View style={styles.container}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={modalVisible}>
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <Text style={styles.modalText}>
+                    Risk of accident{'\n'}
+                    <Text
+                      style={{
+                        ...FONTS.h1,
+                        color: COLORS.third,
+                        textAlign: 'center',
+                      }}>
+                      {risk}
+                    </Text>
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.buttonStyle2}
+                    activeOpacity={0.5}
+                    onPress={() => setModalVisible(!modalVisible)}>
+                    <Text style={styles.buttonTextStyle}>close</Text>
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
             <Loader loading={loading} />
             <View style={styles.contentCenter}>
               <Text style={styles.title}> Accident{'\n'}Prediction</Text>
@@ -81,7 +111,7 @@ const AccidentPrediction = ({navigation}) => {
                       color: COLORS.third,
                       textAlign: 'center',
                     }}>
-                    Temperature{'\n'}27'c
+                    Temperature{'\n'} {risk ? 32 : null}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -101,7 +131,7 @@ const AccidentPrediction = ({navigation}) => {
                       color: COLORS.third,
                       textAlign: 'center',
                     }}>
-                    Humidity{'\n'}27
+                    Humidity{'\n'}80
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -120,7 +150,8 @@ const AccidentPrediction = ({navigation}) => {
                       color: COLORS.third,
                       textAlign: 'center',
                     }}>
-                    Traffic condition{'\n'}27
+                    Traffic condition{'\n'}
+                    {risk ? <Text>50</Text> : null}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -147,7 +178,8 @@ const AccidentPrediction = ({navigation}) => {
                       textAlign: 'center',
                       color: COLORS.third,
                     }}>
-                    Accident time{'\n'}27
+                    Accident time{'\n'}
+                    {risk ? <Text>1</Text> : null}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -168,7 +200,8 @@ const AccidentPrediction = ({navigation}) => {
 
                       textAlign: 'center',
                     }}>
-                    Road Type{'\n'}27
+                    Road Type{'\n'}
+                    {risk ? <Text>1</Text> : null}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -188,7 +221,8 @@ const AccidentPrediction = ({navigation}) => {
 
                       textAlign: 'center',
                     }}>
-                    No Of Lanes{'\n'}27
+                    No Of Lanes{'\n'}
+                    {risk ? <Text>2</Text> : null}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -216,7 +250,8 @@ const AccidentPrediction = ({navigation}) => {
 
                       textAlign: 'center',
                     }}>
-                    Bus {'\n'}27
+                    Bus route{'\n'}
+                    {risk ? <Text>0</Text> : null}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -236,7 +271,8 @@ const AccidentPrediction = ({navigation}) => {
                       color: COLORS.third,
                       textAlign: 'center',
                     }}>
-                    Train {'\n'}27
+                    Train {'\n'}
+                    {risk ? <Text>1</Text> : null}
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
@@ -255,7 +291,8 @@ const AccidentPrediction = ({navigation}) => {
                       color: COLORS.third,
                       textAlign: 'center',
                     }}>
-                    Junction {'\n'}27
+                    Junction {'\n'}
+                    {risk ? <Text>1</Text> : null}
                   </Text>
                 </TouchableOpacity>
               </View>
@@ -294,11 +331,7 @@ const AccidentPrediction = ({navigation}) => {
               }}>
               <TouchableOpacity
                 onPress={() => {
-                  // createUser();
-
                   navigation.navigate('Login');
-
-                  // navigation.navigate('Home');
                 }}
                 style={{
                   borderRadius: 30,
@@ -353,6 +386,49 @@ const styles = StyleSheet.create({
   textStyle: {
     color: 'white',
     padding: 10,
+  },
+
+  centeredView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: 'white',
+    borderRadius: 20,
+    padding: 35,
+    alignItems: 'center',
+    shadowColor: '#111',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonTextStyle: {
+    color: '#FFFFFF',
+    fontSize: 16,
+  },
+  modalText: {
+    fontSize: 25,
+    textAlign: 'center',
+    marginTop: 20,
+  },
+  buttonStyle2: {
+    backgroundColor: COLORS.primary,
+    borderWidth: 0,
+    color: '#fff',
+    borderColor: '#00BFA6',
+    height: 30,
+    width: 50,
+    marginTop: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+    borderRadius: 30,
   },
 });
 

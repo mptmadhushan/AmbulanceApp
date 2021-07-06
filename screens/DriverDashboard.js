@@ -12,9 +12,8 @@ const DriverDash = ({route, navigation}) => {
     getData();
   }, []);
   const getData = () => {
-    console.log('hey');
     const onSuccess = ({data}) => {
-      console.log('data', data);
+      // console.log('data', data);
       setAccInfro(data);
     };
     const onFailure = error => {
@@ -123,7 +122,8 @@ const DriverDash = ({route, navigation}) => {
                 borderRadius: 10,
               }}
               onPress={() => {
-                Linking.openURL('tel:119');
+                navigation.navigate('DriverScreen');
+                // Linking.openURL('tel:119');
               }}>
               <Text style={{...FONTS.h4, color: COLORS.white}}>
                 More Information

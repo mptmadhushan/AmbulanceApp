@@ -5,6 +5,7 @@ import {
   Alert,
   Text,
   View,
+  Linking,
   Platform,
   TouchableOpacity,
 } from 'react-native';
@@ -80,10 +81,11 @@ function CallAmbulance({navigation}) {
         textContent={'Sending...'}
         textStyle={styles.spinnerTextStyle}
       />
-      <Text style={styles.title}> AMBULANCE EMS</Text>
       <MImagePicker
         header={{nextTitle: 'Send', cancelTitle: 'Cancel'}}
-        onCancel={() => {}}
+        onCancel={() => {
+          navigation.navigate('Home');
+        }}
         onNext={async param => {
           console.log('param🪂');
           console.log(param.photos[0].node.image);
@@ -111,13 +113,13 @@ function CallAmbulance({navigation}) {
         }}>
         <TouchableOpacity
           onPress={() => {
-            // uploadVideo();
+            Linking.openURL('tel:119');
           }}
           style={{
             marginTop: 10,
-            width: SIZES.width / 2.5,
+            width: SIZES.width / 2.3,
             elevation: 8,
-            padding: 5,
+            padding: 10,
             borderRadius: 30,
             marginBottom: 10,
             textAlign: 'center',
@@ -130,49 +132,6 @@ function CallAmbulance({navigation}) {
           </Text>
         </TouchableOpacity>
       </View>
-      {/* <TouchableOpacity
-        onPress={() => {
-          // createUser();
-          // uploadVideo();
-          startRecording();
-          // navigation.navigate('AmbulanceMap');
-
-          // navigation.navigate('Home');
-        }}
-        style={{
-          marginTop: 40,
-          elevation: 8,
-          borderRadius: 30,
-          paddingVertical: 15,
-          paddingHorizontal: 25,
-          marginBottom: 20,
-          justifyContent: 'center',
-          backgroundColor: COLORS.third,
-        }}>
-        <Text style={{...FONTS.h3, color: COLORS.white}}>Send</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          // createUser();
-
-          navigation.navigate('DriverScreen');
-
-          // navigation.navigate('Home');
-        }}
-        style={{
-          marginTop: 10,
-          elevation: 8,
-          borderRadius: 30,
-          paddingVertical: 15,
-          paddingHorizontal: 25,
-          marginBottom: 20,
-          justifyContent: 'center',
-          backgroundColor: COLORS.third,
-        }}>
-        <Text style={{...FONTS.h3, color: COLORS.white}}>
-          Call for Ambulance
-        </Text>
-      </TouchableOpacity>*/}
     </View>
   );
 }
@@ -201,6 +160,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    backgroundColor: '#F1f5F6',
+    backgroundColor: COLORS.secondary,
   },
 });

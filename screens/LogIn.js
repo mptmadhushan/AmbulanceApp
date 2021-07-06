@@ -33,7 +33,7 @@ const LoginScreen = ({navigation}) => {
       await AsyncStorage.setItem('@storage_Key', jsonValue);
       console.log(value.user.is_driver);
       if (value.user.is_driver === true) {
-        navigation.navigate('DriverScreen');
+        navigation.navigate('DriverDashboard');
         console.log('driver');
       } else {
         console.log('not-driver');

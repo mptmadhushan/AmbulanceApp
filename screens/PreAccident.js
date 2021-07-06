@@ -55,6 +55,7 @@ const PreAccident = ({navigation}) => {
 
   const [safe, setSafe] = React.useState(false);
   const [location, setLocation] = React.useState('');
+  const [activity, setActivity] = React.useState('');
   function getLocations(loca) {
     const lat = loca.latitude;
     const lng = loca.longitude;
@@ -98,12 +99,19 @@ const PreAccident = ({navigation}) => {
           console.log(response.data.driver_activity);
           let resData = response.data;
           let isSleep = resData.Sleep;
+          if (response.data.driver_activity == 'Looking Around') {
+            setSafe(false);
+            setActivity('Looking Around');
+          }
           if (isSleep === 'Not Sleeping') {
             console.log('not sleeping 💃💃💃');
+            setActivity('Safe Driving');
+
             setSafe(true);
           } else {
             console.log('Seeping 😪😪😪');
             setSafe(false);
+            setActivity('Sleeping');
           }
         })
         .catch(function (error) {
@@ -253,13 +261,18 @@ const PreAccident = ({navigation}) => {
                 justifyContent: 'center',
                 alignItems: 'center',
               }}>
-              {safe === true ? (
+              {activity ? (
+                <Text style={{...FONTS.h3, color: COLORS.white}}>
+                  {activity}
+                </Text>
+              ) : null}
+              {/* {safe === true ? (
                 <Text style={{...FONTS.h3, color: COLORS.white}}>
                   Safe Driving
                 </Text>
               ) : (
                 <Text style={{...FONTS.h3, color: COLORS.white}}>Sleepy</Text>
-              )}
+              )} */}
             </View>
           </View>
         </ImageBackground>
