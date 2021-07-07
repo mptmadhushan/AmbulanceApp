@@ -1,14 +1,86 @@
 /* eslint-disable react-native/no-inline-styles */
 import React from 'react';
 import {View, Text, Image, TouchableOpacity, Linking} from 'react-native';
-
+import GetLocation from 'react-native-get-location';
 import {COLORS, FONTS, icons, SIZES} from '../constants';
 import APIKit, {setClientToken} from '../constants/apiKit';
+import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
+import axios from 'axios';
 
+const initialCurrentLocation = {
+  streetName: 'Nuwara Eliya',
+  gps: {
+    latitude: 6.9567901,
+    longitude: 80.7773807,
+  },
+};
+const initialAmbulanceLocation = {
+  location: {
+    latitude: 6.9621409,
+    longitude: 80.7680976,
+  },
+};
 const DriverDash = ({route, navigation}) => {
   const [accInfo, setAccInfro] = React.useState('');
-
+  const mapView = React.useRef();
+  const [region, setRegion] = React.useState(null);
+  const [fromLocation, setFromLocation] = React.useState(null);
   React.useEffect(() => {
+    console.log('effect');
+    GetLocation.getCurrentPosition({
+      enableHighAccuracy: true,
+      timeout: 15000,
+    })
+      .then(location => {
+        // console.log('location 👨‍✈️');
+        // console.log(location);
+        getLocations(location);
+        console.log(location);
+      })
+      .catch(error => {
+        console.log('location error 🌸');
+        console.log(error);
+        const {code, message} = error;
+        console.warn(code, message);
+      });
+  }, []);
+  const [location, setLocation] = React.useState('');
+
+  function getLocations(loca) {
+    const lat = loca.latitude;
+    const lng = loca.longitude;
+    console.log('lat, latlng');
+    console.log(lat, lng);
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBw9KFdObw6LqsJJR0Mln1acv4nqjVk7sg`,
+      )
+      .then(function (response) {
+        // console.log('lca', response.data.results[0].formatted_address);
+        console.log('lca', response.data);
+        const locationName =git ;
+        var myArray = locationName.split(',');
+        console.log('myArray[0] 🚂🚂');
+        console.log(myArray[0]);
+        setLocation(myArray[0]);
+      })
+      .catch(function (error) {
+        console.log('cla', error);
+      });
+  }
+  React.useEffect(() => {
+    let fromLoc = initialCurrentLocation.gps;
+    let toLoc = initialAmbulanceLocation.location;
+    let street = initialCurrentLocation.streetName;
+
+    let mapRegion = {
+      latitude: (fromLoc.latitude + toLoc.latitude) / 2,
+      longitude: (fromLoc.longitude + toLoc.longitude) / 2,
+      latitudeDelta: Math.abs(fromLoc.latitude - toLoc.latitude) * 2,
+      longitudeDelta: Math.abs(fromLoc.longitude - toLoc.longitude) * 2,
+    };
+    setRegion(mapRegion);
+    setFromLocation(fromLoc);
     getData();
   }, []);
   const getData = () => {
@@ -54,10 +126,10 @@ const DriverDash = ({route, navigation}) => {
           />
 
           <View style={{flex: 1}}>
-            <Text style={{...FONTS.body3}}>streetName</Text>
+            <Text style={{...FONTS.body3}}>{location}</Text>
           </View>
 
-          <Text style={{...FONTS.body3}}>{Date().toLocaleString()}</Text>
+          {/* <Text style={{...FONTS.body3}}>{Date().toLocaleString()}</Text> */}
         </View>
       </View>
     );
@@ -134,10 +206,72 @@ const DriverDash = ({route, navigation}) => {
       </View>
     );
   }
+  function renderMap() {
+    // const destinationMarker = () => (
+    //   <Marker coordinate={toLocation}>
+    //     <View
+    //       style={{
+    //         height: 40,
+    //         width: 40,
+    //         borderRadius: 20,
+    //         alignItems: 'center',
+    //         justifyContent: 'center',
+    //         backgroundColor: COLORS.white,
+    //       }}>
+    //       <View
+    //         style={{
+    //           height: 30,
+    //           width: 30,
+    //           borderRadius: 15,
+    //           alignItems: 'center',
+    //           justifyContent: 'center',
+    //           backgroundColor: COLORS.primary,
+    //         }}>
+    //         <Image
+    //           source={icons.pin}
+    //           style={{
+    //             width: 25,
+    //             height: 25,
+    //             tintColor: COLORS.white,
+    //           }}
+    //         />
+    //       </View>
+    //     </View>
+    //   </Marker>
+    // );
 
+    const carIcon = () => (
+      <Marker
+        coordinate={fromLocation}
+        anchor={{x: 0.5, y: 0.5}}
+        flat={true}
+        // rotation={angle}
+      >
+        <Image
+          source={icons.ambulance}
+          style={{
+            width: 40,
+            height: 40,
+          }}
+        />
+      </Marker>
+    );
+
+    return (
+      <View style={{flex: 1}}>
+        <MapView
+          ref={mapView}
+          provider={PROVIDER_GOOGLE}
+          initialRegion={region}
+          style={{flex: 1}}>
+          {carIcon()}
+        </MapView>
+      </View>
+    );
+  }
   return (
     <View style={{flex: 1}}>
-      {/* {renderMap()} */}
+      {renderMap()}
       {renderDestinationHeader()}
       {renderInfo()}
       {/* {renderButtons()} */}

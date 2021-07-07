@@ -44,6 +44,7 @@ const PreAccident = ({navigation}) => {
         // console.log('location 👨‍✈️');
         // console.log(location);
         getLocations(location);
+        console.log(location);
       })
       .catch(error => {
         console.log('location error 🌸');
@@ -63,10 +64,11 @@ const PreAccident = ({navigation}) => {
     console.log(lat, lng);
     axios
       .get(
-        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyAjO92NdWvu0qpgVhOXZdj89OUGxS94F-U`,
+        `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lng}&key=AIzaSyBw9KFdObw6LqsJJR0Mln1acv4nqjVk7sg`,
       )
       .then(function (response) {
         // console.log('lca', response.data.results[0].formatted_address);
+        console.log('lca', response.data);
         const locationName = response.data.results[0].formatted_address;
         var myArray = locationName.split(',');
         console.log('myArray[0] 🚂🚂');
@@ -97,16 +99,24 @@ const PreAccident = ({navigation}) => {
         })
         .then(function (response) {
           console.log(response.data.driver_activity);
+          console.log(response.data.Sleep);
           let resData = response.data;
           let isSleep = resData.Sleep;
           if (response.data.driver_activity == 'Looking Around') {
             setSafe(false);
             setActivity('Looking Around');
           }
+          if (response.data.driver_activity == 'Texting') {
+            setSafe(false);
+            setActivity('Using Phone');
+          }
+          if (response.data.driver_activity == 'Drowsy') {
+            setSafe(false);
+            setActivity('Drowsy');
+          }
           if (isSleep === 'Not Sleeping') {
             console.log('not sleeping 💃💃💃');
             setActivity('Safe Driving');
-
             setSafe(true);
           } else {
             console.log('Seeping 😪😪😪');
@@ -266,13 +276,6 @@ const PreAccident = ({navigation}) => {
                   {activity}
                 </Text>
               ) : null}
-              {/* {safe === true ? (
-                <Text style={{...FONTS.h3, color: COLORS.white}}>
-                  Safe Driving
-                </Text>
-              ) : (
-                <Text style={{...FONTS.h3, color: COLORS.white}}>Sleepy</Text>
-              )} */}
             </View>
           </View>
         </ImageBackground>
@@ -289,7 +292,7 @@ const styles = StyleSheet.create({
   //   backgroundColor: COLORS.lightGray4,
   // },
   container2: {
-    transform: [{rotate: '-90deg'}],
+    // transform: [{rotate: '-90deg'}],
     height: SIZES.height / 4,
     width: SIZES.width,
 

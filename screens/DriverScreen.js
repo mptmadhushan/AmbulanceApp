@@ -101,12 +101,26 @@ function DriverScreen({navigation}) {
                 setValue={setValue}
                 setItems={setItems}
               />
-              <TouchableOpacity
-                style={styles.buttonStyle2}
-                activeOpacity={0.5}
-                onPress={() => setModalVisible(!modalVisible)}>
-                <Text style={styles.buttonTextStyle}>submit</Text>
-              </TouchableOpacity>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'space-around',
+                  padding: 10,
+                  width: SIZES.width,
+                }}>
+                <TouchableOpacity
+                  style={styles.buttonStyle2}
+                  activeOpacity={0.5}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.buttonTextStyle}>submit</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.buttonStyle2}
+                  activeOpacity={0.5}
+                  onPress={() => setModalVisible(!modalVisible)}>
+                  <Text style={styles.buttonTextStyle}>Cancel</Text>
+                </TouchableOpacity>
+              </View>
             </View>
           </View>
         </Modal>
@@ -200,86 +214,6 @@ function DriverScreen({navigation}) {
             <View>
               <TouchableOpacity style={styles.btnDriver}>
                 {accData.accuracy.vehicle_fire > '50' ? (
-                  <Image
-                    source={icons.done}
-                    resizeMode="contain"
-                    style={{
-                      width: 25,
-                      height: 25,
-                      tintColor: COLORS.black,
-                    }}
-                  />
-                ) : null}
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.list}>
-            <View style={styles.listBackground}>
-              <Text style={styles.listTitle}>car vs bike</Text>
-            </View>
-            <View>
-              <TouchableOpacity style={styles.btnDriver}>
-                {accData.accuracy.car_vs_bike > '50' ? (
-                  <Image
-                    source={icons.done}
-                    resizeMode="contain"
-                    style={{
-                      width: 25,
-                      height: 25,
-                      tintColor: COLORS.black,
-                    }}
-                  />
-                ) : null}
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.list}>
-            <View style={styles.listBackground}>
-              <Text style={styles.listTitle}>car vs car</Text>
-            </View>
-            <View>
-              <TouchableOpacity style={styles.btnDriver}>
-                {accData.accuracy.car_vs_car > '50' ? (
-                  <Image
-                    source={icons.done}
-                    resizeMode="contain"
-                    style={{
-                      width: 25,
-                      height: 25,
-                      tintColor: COLORS.black,
-                    }}
-                  />
-                ) : null}
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.list}>
-            <View style={styles.listBackground}>
-              <Text style={styles.listTitle}>car vs pedestrian</Text>
-            </View>
-            <View>
-              <TouchableOpacity style={styles.btnDriver}>
-                {accData.accuracy.car_vs_pedestrian > '50' ? (
-                  <Image
-                    source={icons.done}
-                    resizeMode="contain"
-                    style={{
-                      width: 25,
-                      height: 25,
-                      tintColor: COLORS.black,
-                    }}
-                  />
-                ) : null}
-              </TouchableOpacity>
-            </View>
-          </View>
-          <View style={styles.list}>
-            <View style={styles.listBackground}>
-              <Text style={styles.listTitle}>car vs tree</Text>
-            </View>
-            <View>
-              <TouchableOpacity style={styles.btnDriver}>
-                {accData.accuracy.car_vs_tree > '50' ? (
                   <Image
                     source={icons.done}
                     resizeMode="contain"
@@ -404,7 +338,7 @@ function DriverScreen({navigation}) {
           <TouchableOpacity
             style={styles.btnDriver2}
             onPress={() => setModalVisible(!modalVisible)}>
-            <Text style={{...FONTS.h3, color: COLORS.white}}>Declined</Text>
+            <Text style={{...FONTS.h3, color: COLORS.white}}>Decline</Text>
           </TouchableOpacity>
         </View>
       </ImageBackground>
@@ -511,6 +445,7 @@ const styles = StyleSheet.create({
     width: 70,
     marginTop: 30,
     marginBottom: 30,
+    marginRight: 30,
     alignItems: 'center',
     justifyContent: 'center',
     borderRadius: 30,
