@@ -65,14 +65,14 @@ const AccidentPrediction = ({navigation}) => {
               <View style={styles.centeredView}>
                 <View style={styles.modalView}>
                   <Text style={styles.modalText}>
-                    Risk of accident{'\n'}
+                    Accident{'\n'}Risk :
                     <Text
                       style={{
                         ...FONTS.h1,
                         color: COLORS.third,
                         textAlign: 'center',
                       }}>
-                      {risk}
+                      {risk}%
                     </Text>
                   </Text>
                   <TouchableOpacity
@@ -319,7 +319,7 @@ const AccidentPrediction = ({navigation}) => {
                     color: COLORS.third,
                     textAlign: 'center',
                   }}>
-                  Risk of {'\n'}accident :{risk}
+                  Accident{'\n'}Risk :{risk}%
                 </Text>
               </TouchableOpacity>
             </View>

@@ -68,7 +68,7 @@ const PreAccident = ({navigation}) => {
       )
       .then(function (response) {
         // console.log('lca', response.data.results[0].formatted_address);
-        console.log('lca', response.data);
+        console.log('response 🧑‍🚀🍀', response.data);
         const locationName = response.data.results[0].formatted_address;
         var myArray = locationName.split(',');
         console.log('myArray[0] 🚂🚂');
@@ -76,7 +76,7 @@ const PreAccident = ({navigation}) => {
         setLocation(myArray[0]);
       })
       .catch(function (error) {
-        console.log('cla', error);
+        console.log('error ', error);
       });
   }
   let camera;
@@ -85,7 +85,7 @@ const PreAccident = ({navigation}) => {
       const options = {
         quality: 0.5,
         base64: true,
-        orientation: 'landscapeLeft',
+        // orientation: 'landscapeLeft',
         forceUpOrientation: true,
         fixOrientation: true,
       };

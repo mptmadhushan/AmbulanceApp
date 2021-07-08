@@ -48,7 +48,7 @@ const Home = ({navigation}) => {
           source={require('../assets/images/wave-haikei.png')}>
           <View style={styles.container}>
             <View style={styles.contentCenter}>
-              <Text style={styles.title}> AMBULANCE{'\n'}EMS</Text>
+              <Text style={styles.title}> AMBULANCE EMS</Text>
               <TouchableOpacity
                 onPress={() => {
                   // createUser();
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginTop: SIZES.height * 0.16,
-    fontSize: 55,
+    fontSize: 35,
     padding: 15,
     marginLeft: 20,
     color: 'white',
