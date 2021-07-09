@@ -48,12 +48,12 @@ function CallAmbulance({navigation}) {
       });
   }, []);
   const getData = async () => {
-    console.log('cis');
     try {
       const jsonValue = await AsyncStorage.getItem('@storage_Key');
       const userData = JSON.parse(jsonValue);
-      setUserData(userData.user);
-      console.log(newData);
+      setUserData(userData);
+      console.log(userData);
+      console.log('cis');
     } catch (e) {
       console.log('ee');
       navigation.navigate('OnBoard2');
@@ -65,9 +65,7 @@ function CallAmbulance({navigation}) {
     Alert.alert('Success.!', 'Video has been successfully submitted..', [
       {
         text: 'OK',
-        // onPress: () =>
-        //  navigation.navigate('AmbulanceMap'
-        //  ),
+        onPress: () => navigation.navigate('AmbulanceMap'),
       },
     ]);
   const uploadVideo = async fileUrl => {
@@ -100,8 +98,6 @@ function CallAmbulance({navigation}) {
         console.log('response 🤡🤡');
         console.log(fileUrl);
         setResult(data);
-        setSpinner(false);
-        createTwoButtonAlert();
         const toSend = data;
         newSend(toSend, fileUrl);
       })
@@ -150,7 +146,7 @@ function CallAmbulance({navigation}) {
     APIKit.post('/save_data', payload).then(onSuccess).catch(onFailure);
   };
   const newSend = (toSend, fileUrl) => {
-    // console.log('newImageUri 😹🐶', fileUrl);
+    console.log('newImageUri 😹🐶', fileUrl, toSend, newData.token);
     // console.log('fileUrl replace 🐶', filePath.uri.replace('file://', ''));
     console.log('😹🐶', toSend, fileUrl);
     const newLocation = locationData.latitude + ':' + locationData.longitude;
@@ -160,7 +156,7 @@ function CallAmbulance({navigation}) {
     var formdata = new FormData();
     formdata.append('time', locationData.time);
     formdata.append('location', newLocation);
-    formdata.append('accident_type', 'car vs car');
+    // formdata.append('accident_type', 'car vs car');
     formdata.append('bleeding', toSend.bleeding);
     formdata.append('car_vs_bike', toSend.car_vs_bike);
     formdata.append('car_vs_car', toSend.car_vs_car);
@@ -172,30 +168,27 @@ function CallAmbulance({navigation}) {
     formdata.append('upside_down', toSend.upside_down);
     formdata.append('vehicle_fire', toSend.vehicle_fire);
     formdata.append('file', {
-      uri:
-        Platform.OS === 'android'
-          ? fileUrl.uri
-          : fileUrl.uri.replace('file://', ''),
+      uri: fileUrl.uri,
+      // Platform.OS === 'android'
+      //   ? fileUrl.uri
+      //   : fileUrl.uri.replace('file://', ''),
       type: 'video/mp4',
       name: 'name.mp4',
     });
-    // formdata.append('file', fileInput.files[0], '19.mp4');
 
-    var requestOptions = {
+    fetch('https://aqueous-dawn-29192.herokuapp.com/api/save_data', {
       method: 'POST',
       headers: myHeaders,
       body: formdata,
-      redirect: 'follow',
-    };
-
-    fetch(
-      'https://aqueous-dawn-29192.herokuapp.com/api/save_data',
-      requestOptions,
-    )
-      .then(response => console.log('done 👺👺'))
-      // .then(response => response.json())
-      .then(response => console.log('👾👾👾👾', response))
-      .catch(error => console.log('error', error));
+    })
+      .then(response => console.log('🦖🦖', response))
+      .then(response => {
+        console.log('response 🤡🤡', response);
+        console.log('response 🤡🤡');
+        setSpinner(false);
+        createTwoButtonAlert();
+      })
+      .catch(err => console.log('err 🥵', err));
   };
   return (
     <View style={styles.container}>
@@ -211,7 +204,7 @@ function CallAmbulance({navigation}) {
         }}
         onNext={async param => {
           console.log('param🪂');
-          console.log(param.photos[0].node.image);
+          // console.log(param.selected[0]);
           const fileUrl = param.photos[0].node.image;
           setVideo(param.photos[0].node.image);
           param.videoMaxLen = 1; // not set or 0 for unlimited

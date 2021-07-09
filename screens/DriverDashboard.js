@@ -36,6 +36,7 @@ const DriverDash = ({route, navigation}) => {
         // console.log(location);
         getLocations(location);
         console.log(location);
+        setCurrLocation(location);
       })
       .catch(error => {
         console.log('location error 🌸');
@@ -45,6 +46,7 @@ const DriverDash = ({route, navigation}) => {
       });
   }, []);
   const [location, setLocation] = React.useState('');
+  const [currLocation, setCurrLocation] = React.useState('');
 
   function getLocations(loca) {
     const lat = loca.latitude;
@@ -58,7 +60,7 @@ const DriverDash = ({route, navigation}) => {
       .then(function (response) {
         // console.log('lca', response.data.results[0].formatted_address);
         console.log('lca', response.data);
-        const locationName =git ;
+        const locationName = response.data.results[0].formatted_address;
         var myArray = locationName.split(',');
         console.log('myArray[0] 🚂🚂');
         console.log(myArray[0]);
@@ -69,6 +71,8 @@ const DriverDash = ({route, navigation}) => {
       });
   }
   React.useEffect(() => {
+    console.log('currLocation');
+    console.log(currLocation);
     let fromLoc = initialCurrentLocation.gps;
     let toLoc = initialAmbulanceLocation.location;
     let street = initialCurrentLocation.streetName;

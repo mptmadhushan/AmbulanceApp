@@ -168,7 +168,9 @@ function DriverScreen({navigation}) {
               <Text style={styles.listTitle}>Accident Location</Text>
             </View>
             <View>
-              <TouchableOpacity style={styles.btnDriver}>
+              <TouchableOpacity
+                style={styles.btnDriver}
+                onPress={() => navigation.navigate('AmbulanceMap')}>
                 <Image
                   source={icons.location}
                   resizeMode="contain"

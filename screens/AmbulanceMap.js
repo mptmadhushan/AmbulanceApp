@@ -322,7 +322,7 @@ const OrderDelivery = ({route, navigation}) => {
                 borderRadius: 10,
               }}
               onPress={() => {
-                Linking.openURL('tel:119');
+                Linking.openURL('tel:0722101312');
               }}>
               <Text style={{...FONTS.h4, color: COLORS.white}}>Call</Text>
             </TouchableOpacity>
@@ -337,7 +337,7 @@ const OrderDelivery = ({route, navigation}) => {
                 borderRadius: 10,
               }}
               onPress={() => navigation.goBack()}>
-              <Text style={{...FONTS.h4, color: COLORS.white}}>Cancel</Text>
+              <Text style={{...FONTS.h4, color: COLORS.white}}>Back</Text>
             </TouchableOpacity>
           </View>
         </View>

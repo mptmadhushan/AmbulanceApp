@@ -38,7 +38,6 @@ const App = () => {
           name="AccidentPrediction"
           component={AccidentPrediction}
         />
-        {/* <Stack.Screen name="Log" component={Log} /> */}
       </Stack.Navigator>
     </NavigationContainer>
   );

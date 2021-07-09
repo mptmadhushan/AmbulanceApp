@@ -13,6 +13,7 @@ import {
 import {RNCamera} from 'react-native-camera';
 import GetLocation from 'react-native-get-location';
 import axios from 'axios';
+import useSound from 'react-native-use-sound';
 // import {useCamera} from 'react-native-camera-hooks';
 import {icons, images, SIZES, COLORS, FONTS} from '../constants';
 
@@ -20,7 +21,9 @@ const PreAccident = ({navigation}) => {
   var today = new Date();
   const time = today.getHours() + ':' + today.getMinutes();
   const [dt, setDt] = useState(time);
-
+  const [play, pause, stop, data] = useSound(
+    'https://audio-previews.elements.envatousercontent.com/files/181518461/preview.mp3',
+  );
   React.useEffect(() => {
     let secTimer = setInterval(() => {
       var today = new Date();
@@ -90,8 +93,6 @@ const PreAccident = ({navigation}) => {
         fixOrientation: true,
       };
       const data = await camera.takePictureAsync(options);
-      console.log('🧕🧕🧕🧕🧕');
-      console.log('🧕🧕🧕🧕🧕');
       const baseImage = data.base64;
       axios
         .post('http://sahan1314.pythonanywhere.com/driver_activity', {
@@ -99,28 +100,34 @@ const PreAccident = ({navigation}) => {
         })
         .then(function (response) {
           console.log(response.data.driver_activity);
+          console.log(response.data.driver_activity);
           console.log(response.data.Sleep);
           let resData = response.data;
           let isSleep = resData.Sleep;
           if (response.data.driver_activity == 'Looking Around') {
             setSafe(false);
             setActivity('Looking Around');
+            play();
           }
           if (response.data.driver_activity == 'Texting') {
             setSafe(false);
             setActivity('Using Phone');
+            play();
           }
           if (response.data.driver_activity == 'Drowsy') {
             setSafe(false);
             setActivity('Drowsy');
+            play();
           }
           if (isSleep === 'Not Sleeping') {
+            stop();
             console.log('not sleeping 💃💃💃');
             setActivity('Safe Driving');
             setSafe(true);
           } else {
             console.log('Seeping 😪😪😪');
             setSafe(false);
+            play();
             setActivity('Sleeping');
           }
         })
