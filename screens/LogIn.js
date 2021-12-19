@@ -14,8 +14,11 @@ import {
   Keyboard,
   TouchableOpacity,
   KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
-
+import {useForm} from 'react-hook-form';
+import {yupResolver} from '@hookform/resolvers/yup';
+import * as Yup from 'yup';
 import Loader from '../components/Loader';
 import APIKit, {setClientToken} from '../constants/apiKit';
 import AsyncStorage from '@react-native-community/async-storage';
@@ -80,7 +83,8 @@ const LoginScreen = ({navigation}) => {
           alignContent: 'center',
         }}>
         <View>
-          <KeyboardAvoidingView enabled>
+          <KeyboardAvoidingView
+            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}>
             <View style={{alignItems: 'center'}}>
               <Image
                 source={require('../assets/images/Doctor_Monochromatic.png')}
